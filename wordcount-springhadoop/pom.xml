@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mulodo</groupId>
-	<artifactId>simple-workflow</artifactId>
+	<artifactId>wordcount.springhadoop</artifactId>
 	<version>0.1</version>
 
 	<name>Word count workflow</name>

@@ -3,7 +3,7 @@ simple-workflow
 
 Simple Workflow MapReduce example.
 
-**Note:** This example depends on the `wordcount/hadoop` project, so you must first build and install that.
+**Note:** This example depends on the `wordcount-hadoop` project, so you must first build and install that.
 
 Build with:
 
