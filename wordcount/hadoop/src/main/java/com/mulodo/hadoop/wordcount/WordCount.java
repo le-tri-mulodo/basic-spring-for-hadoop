@@ -1,48 +1,33 @@
 package com.mulodo.hadoop.wordcount;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileInputFormat;
-import org.apache.hadoop.mapred.FileOutputFormat;
-import org.apache.hadoop.mapred.JobClient;
-import org.apache.hadoop.mapred.JobConf;
-import org.apache.hadoop.util.Tool;
-import org.apache.hadoop.util.ToolRunner;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class WordCount extends Configured implements Tool {
-	public int run(String[] args) throws Exception {
-		// creating a JobConf object and assigning a job name for identification
-		// purposes
-		JobConf conf = new JobConf(getConf(), WordCount.class);
-		conf.setJobName("WordCount");
-
-		// Setting configuration object with the Data Type of output Key and
-		// Value
-		conf.setOutputKeyClass(Text.class);
-		conf.setOutputValueClass(IntWritable.class);
-
-		// Providing the mapper and reducer class names
-		conf.setMapperClass(WordCountMapper.class);
-		conf.setReducerClass(WordCountReducer.class);
-		// We wil give 2 arguments at the run time, one in input path and other
-		// is output path
-		Path inp = new Path(args[0]);
-		Path out = new Path(args[1]);
-		// the hdfs input and output directory to be fetched from the command
-		// line
-		FileInputFormat.addInputPath(conf, inp);
-		FileOutputFormat.setOutputPath(conf, out);
-
-		JobClient.runJob(conf);
-		return 0;
-	}
-
+public class WordCount {
 	public static void main(String[] args) throws Exception {
-		// this main function will call run method defined above.
-		int res = ToolRunner.run(new Configuration(), new WordCount(), args);
-		System.exit(res);
+
+		Configuration conf = new Configuration();
+
+		if (args.length != 2) {
+			System.err.println("Usage: <in> <out>");
+			System.exit(2);
+		}
+
+		Job job = new Job(conf, "word count");
+		job.setJarByClass(WordCount.class);
+		job.setMapperClass(WordCountMapper.class);
+		job.setCombinerClass(WordCountReducer.class);
+		job.setReducerClass(WordCountReducer.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
+
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 }

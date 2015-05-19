@@ -1,26 +1,23 @@
 package com.mulodo.hadoop.wordcount;
 
+
 import java.io.IOException;
-import java.util.Iterator;
 
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapred.*;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
 
-public class WordCountReducer extends MapReduceBase implements
+public class WordCountReducer extends
 		Reducer<Text, IntWritable, Text, IntWritable> {
-	// reduce method accepts the Key Value pairs from mappers, do the
-	// aggregation based on keys and produce the final out put
-	public void reduce(Text key, Iterator<IntWritable> values,
-			OutputCollector<Text, IntWritable> output, Reporter reporter)
-			throws IOException {
+	private IntWritable result = new IntWritable();
+
+	public void reduce(Text key, Iterable<IntWritable> values, Context context)
+			throws IOException, InterruptedException {
 		int sum = 0;
-		/*
-		 * iterates through all the values available with a key and add them
-		 * together and give the final result as the key and sum of its values
-		 */
-		while (values.hasNext()) {
-			sum += values.next().get();
+		for (IntWritable val : values) {
+			sum += val.get();
 		}
-		output.collect(key, new IntWritable(sum));
+		result.set(sum);
+		context.write(key, result);
 	}
 }

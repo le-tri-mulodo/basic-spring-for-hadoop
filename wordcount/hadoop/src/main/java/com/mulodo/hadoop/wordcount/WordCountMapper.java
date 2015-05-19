@@ -3,32 +3,22 @@ package com.mulodo.hadoop.wordcount;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapred.*;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
 
-public class WordCountMapper extends MapReduceBase implements
-		Mapper<LongWritable, Text, Text, IntWritable> {
-	// hadoop supported data types
+public class WordCountMapper extends
+		Mapper<Object, Text, Text, IntWritable> {
+
 	private final static IntWritable one = new IntWritable(1);
 	private Text word = new Text();
 
-	// map method that performs the tokenizer job and framing the initial key
-	// value pairs
-	// after all lines are converted into key-value pairs, reducer is called.
-	public void map(LongWritable key, Text value,
-			OutputCollector<Text, IntWritable> output, Reporter reporter)
-			throws IOException {
-		// taking one line at a time from input file and tokenizing the same
-		String line = value.toString();
-		StringTokenizer tokenizer = new StringTokenizer(line);
-
-		// iterating through all the words available in that line and forming
-		// the key value pair
-		while (tokenizer.hasMoreTokens()) {
-			word.set(tokenizer.nextToken());
-			// sending to output collector which inturn passes the same to
-			// reducer
-			output.collect(word, one);
+	public void map(Object key, Text value, Context context)
+			throws IOException, InterruptedException {
+		StringTokenizer itr = new StringTokenizer(value.toString());
+		while (itr.hasMoreTokens()) {
+			word.set(itr.nextToken());
+			context.write(word, one);
 		}
 	}
 }
