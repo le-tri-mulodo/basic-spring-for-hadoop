@@ -15,18 +15,34 @@
  */
 package com.mulodo.hadoop.wordcount;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 @EnableAutoConfiguration
 @Configuration
 @ImportResource("META-INF/spring/application-context.xml")
 public class Application {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+	public static void main(String[] args) throws IOException {
+
+		Resource resource = new ClassPathResource("application.properties");
+		Properties props = PropertiesLoaderUtils.loadProperties(resource);
+
+		System.out.println(props.getProperty("spring.hadoop.fsUri"));
+		System.out.println(props
+				.getProperty("spring.hadoop.resourceManagerHost"));
+		System.out
+				.println(props.getProperty("spring.hadoop.jobHistoryAddress"));
+
+		SpringApplication.run(Application.class, args);
+	}
 
 }

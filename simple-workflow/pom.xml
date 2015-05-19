@@ -49,9 +49,9 @@
 			<artifactId>groovy</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.springdeveloper.demo</groupId>
-			<artifactId>tweets-mapreduce</artifactId>
-			<version>0.1.0</version>
+			<groupId>com.mulodo</groupId>
+			<artifactId>hadoop.wordcount</artifactId>
+			<version>0.1</version>
 		</dependency>
 	</dependencies>
  

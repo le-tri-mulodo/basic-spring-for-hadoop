@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/hadoop"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
@@ -10,30 +9,26 @@
 	<configuration>
 		fs.defaultFS=${spring.hadoop.fsUri}
 		yarn.resourcemanager.hostname=${spring.hadoop.resourceManagerHost}
-		mapreduce.framework.name=yarn
 		mapreduce.jobhistory.address=${spring.hadoop.jobHistoryAddress}
+		mapreduce.framework.name=yarn
 	</configuration>
 
 	<script id="setupScript" location="file-prep.groovy">
-		<property name="localFile" value="#{systemProperties['user.dir']}/${local.file}"/>
-		<property name="inputDir" value="${hdfs.input.path}"/>
-		<property name="outputDir" value="${hdfs.output.path}"/>
-	</script>	
+		<property name="localFile"
+			value="#{systemProperties['user.dir']}/${local.file}" />
+		<property name="inputDir" value="${hdfs.input.path}" />
+		<property name="outputDir" value="${hdfs.output.path}" />
+	</script>
 
-	<job id="tweetCountJob"
-		input-path="${hdfs.input.path}"
-		output-path="${hdfs.output.path}"
-		jar="file:#{systemProperties['user.dir']}/target/lib/tweets-mapreduce.jar"
-		mapper="com.springdeveloper.hadoop.TweetCountMapper"
-		reducer="com.springdeveloper.hadoop.IntSumReducer"/>
+	<job id="wordCountJob" input-path="${hdfs.input.path}" output-path="${hdfs.output.path}"
+		jar="file:#{systemProperties['user.dir']}/target/lib/hadoop.wordcount.jar"
+		mapper="com.mulodo.hadoop.wordcount.WordCountMapper" reducer="com.mulodo.hadoop.wordcount.WordCountReducer" />
 
-	<job-runner id="runner" run-at-startup="true"
-		pre-action="setupScript"
-		job-ref="tweetCountJob" 
-		post-action="resultsScript"/>
+	<job-runner id="runner" run-at-startup="true" pre-action="setupScript"
+		job-ref="wordCountJob" post-action="resultsScript" />
 
 	<script id="resultsScript" location="results.groovy">
-		<property name="outputDir" value="${hdfs.output.path}"/>
-	</script>	
+		<property name="outputDir" value="${hdfs.output.path}" />
+	</script>
 
 </beans:beans>
