@@ -3,8 +3,9 @@ Word count with Spring for Hadoop and Spring Batch
 
 Word count with Spring for Hadoop and Spring Batch.
 The program run can run on local or Hadoop server. Flow:
++ Convert PDF file to text file
 + Create input folder in HDFS
-+ Copy data file into input folder
++ Copy data in text file into input folder
 + Run word count
 + Show result in console
 
