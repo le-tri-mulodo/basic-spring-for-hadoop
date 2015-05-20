@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mulodo</groupId>
-	<artifactId>wordcount.batch</artifactId>
+	<artifactId>wordcount.pdf.batch</artifactId>
 	<version>0.1</version>
 
 	<name>Word count with spring hadoop and spring batch</name>
@@ -23,9 +23,16 @@
 		<guava.version>16.0.1</guava.version>
 		<groovy.version>1.8.9</groovy.version>
 		<java.version>1.7</java.version>
+		<pdfbox.version>1.8.4</pdfbox.version>
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>${pdfbox.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.data</groupId>
@@ -78,6 +85,19 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<compilerArgument>-Xlint:all</compilerArgument>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>appassembler-maven-plugin</artifactId>

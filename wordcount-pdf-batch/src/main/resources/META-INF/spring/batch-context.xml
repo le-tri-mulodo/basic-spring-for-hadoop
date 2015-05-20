@@ -1,0 +1,64 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:hdp="http://www.springframework.org/schema/hadoop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      	http://www.springframework.org/schema/batch	http://www.springframework.org/schema/batch/spring-batch.xsd
+      	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      	http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">
+
+	<context:property-placeholder location="application.properties" />
+
+	<import resource="batch-common-context.xml" />
+
+	<hdp:configuration>
+		fs.defaultFS=${spring.hadoop.fsUri}
+		yarn.resourcemanager.hostname=${spring.hadoop.resourceManagerHost}
+		mapreduce.jobhistory.address=${spring.hadoop.jobHistoryAddress}
+		mapreduce.framework.name=yarn
+	</hdp:configuration>
+
+	<job id="wordCountJodBatch" xmlns="http://www.springframework.org/schema/batch">
+		<step id="pdf2Txt" next="setup-step">
+			<tasklet ref="pdf2TxtTasklet" />
+		</step>
+
+		<step id="setup-step" next="wordcount">
+			<tasklet ref="setupScript" />
+		</step>
+
+		<step id="wordcount" next="result-step">
+			<tasklet ref="wordcount-tasklet" />
+		</step>
+		<step id="result-step">
+			<tasklet ref="results" />
+		</step>
+	</job>
+
+	<bean id="pdf2TxtTasklet" class="com.mulodo.tasklet.Pdf2TxtItemTasklet">
+		<property name="pdfDir" value="${pdf.path}" />
+		<property name="txtFile" value="${local.file}" />
+	</bean>
+
+	<hdp:script-tasklet id="setupScript">
+		<hdp:script location="file-prep.groovy">
+			<hdp:property name="localFile" value="${local.file}" />
+			<hdp:property name="inputDir" value="${hdfs.input.path}" />
+			<hdp:property name="outputDir" value="${hdfs.output.path}" />
+		</hdp:script>
+	</hdp:script-tasklet>
+
+	<hdp:job-tasklet id="wordcount-tasklet" job-ref="wordCountJob" />
+
+	<hdp:job id="wordCountJob" input-path="${hdfs.input.path}"
+		output-path="${hdfs.output.path}"
+		jar="file:#{systemProperties['user.dir']}/target/lib/hadoop.wordcount.jar"
+		mapper="com.mulodo.hadoop.wordcount.WordCountMapper" reducer="com.mulodo.hadoop.wordcount.WordCountReducer" />
+
+	<hdp:script-tasklet id="results">
+		<hdp:script location="classpath:results.groovy">
+			<hdp:property name="outputDir" value="${hdfs.output.path}" />
+		</hdp:script>
+	</hdp:script-tasklet>
+
+
+</beans>

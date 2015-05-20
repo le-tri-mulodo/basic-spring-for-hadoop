@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 		 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -9,14 +8,14 @@
 	<artifactId>wordcount.springhadoop</artifactId>
 	<version>0.1</version>
 
-	<name>Word count workflow</name>
+	<name>Word count spring hadoop</name>
 	<description>Put data into input folder, word count and create result</description>
 
 	<parent>
 		<groupId>io.spring.platform</groupId>
 		<artifactId>platform-bom</artifactId>
 		<version>1.0.1.RELEASE</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 
 	<properties>
@@ -54,7 +53,7 @@
 			<version>0.1</version>
 		</dependency>
 	</dependencies>
- 
+
 	<repositories>
 		<repository>
 			<id>spring-releases</id>
@@ -68,7 +67,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
- 			<plugin>
+			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
@@ -77,15 +76,15 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-					    	<outputDirectory>${project.build.directory}/lib</outputDirectory>
-					    	<includeArtifactIds>hadoop.wordcount</includeArtifactIds>
-					    	<stripVersion>true</stripVersion>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<includeArtifactIds>hadoop.wordcount</includeArtifactIds>
+							<stripVersion>true</stripVersion>
 							<excludeTransitive>true</excludeTransitive>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
- 		</plugins>
+		</plugins>
 	</build>
 
 </project>
