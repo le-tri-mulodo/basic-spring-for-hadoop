@@ -12,29 +12,29 @@ The pure Hadoop word count example
 ###Prepare data:
  1. Copy jar file to Hadoop server
  
-    $ scp target/hadoop.wordcount-0.1.jar hadoop@master:~
+    `$ scp target/hadoop.wordcount-0.1.jar hadoop@master:~`
  
  2. Copy data file to Hadoop server
  
-    $ scp ../data/document.txt hadoop@master:~
+    `$ scp ../data/document.txt hadoop@master:~`
  
  3. Create input folder and set permission
  
   + SSH to Hadoop server
   
-    $ ssh hadoop@master
- 
- + Create HDFS Input folder
- 
-    $ hadoop fs -mkdir -p /wordcount/input
- 
- + Change permission
- 
-    $ hadoop fs -chmod 1777 /wordcount/input
- 
- + Put data file into HDFS Input folder
+    `$ ssh hadoop@master`
 
-    $ hadoop fs -put document.txt /wordcount/input
+  + Create HDFS Input folder
+ 
+    `$ hadoop fs -mkdir -p /wordcount/input`
+ 
+  + Change permission
+ 
+    `$ hadoop fs -chmod 1777 /wordcount/input`
+ 
+  + Put data file into HDFS Input folder
+
+    `$ hadoop fs -put document.txt /wordcount/input`
 
 ###Run:
 
