@@ -3,14 +3,6 @@ simple-workflow
 
 Simple Workflow MapReduce example.
 
-**Note:** This example depends on the `tweets-mapreduce` project, so you must first build and install that.
-
-Copies a tweets-hadoop*.txt file to HDFS under /tweets/input/workflow dir.
-
-Build with:
-
-    $ mvn clean package
-
-Run with:
-
-    $ java -jar ./target/simple-workflow-0.1.0.jar
++ This example depends on the `wordcount-hadoop` project, so you must first build and install that.
++ In this examples use `master` host name to IP of Hadoop server.
++ This examples compatible with Hadoop 2 or later
