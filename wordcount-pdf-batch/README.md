@@ -32,7 +32,7 @@ Open `application.properties` and edit properties:
 
 ###Run:
 
-    $ sh target/appassembler/bin/batch-wordcount
+    $ sh target/appassembler/bin/pdf-batch-wordcount
     
 **Note:** If have a `Permission denied` error then ssh to Hadoop server and execute command:
 
